@@ -20,9 +20,32 @@ std::vector<char> BuildTree::tokenize()
 	for (int i = 0; i < exp.length(); i++) {
 		if (exp[i] != ' ') {
 			v.push_back(exp[i]);
-			std::cout << v[i];
 		}
 	}
 
 	return v; // Returns our vector of chars
+}
+
+void BuildTree::build(std::vector<char> v) {
+
+	for (int i = 0; i < v.size(); i++) {
+		switch(v[i]) {
+			case '(':
+			break;
+			
+			case ')':
+			break;
+
+			case '+':
+			case '-':
+			case '/':
+			case '*':
+			break;
+
+			/* If token is a number */
+			default:
+			break;
+		}
+	}
+
 }

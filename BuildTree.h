@@ -11,6 +11,7 @@ private:
 	std::string exp;
 
 	TreeNode* root;
+	TreeNode* previous;
 
 public:
 
@@ -19,7 +20,10 @@ public:
 
 	void build(std::vector<char> v);
 
-	void leftParanthesis();
+	TreeNode* leftParanthesis(TreeNode* newNode);
+	TreeNode* rightParanthesis();
+	TreeNode* isOperand(char item);
+	TreeNode* isOperator(char item, TreeNode* newNode);
 
 	
 };

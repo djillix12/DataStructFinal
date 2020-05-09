@@ -1,12 +1,10 @@
-#include <iostream>
 #include "BuildTree.h"
+#include "TreeNode.h"
 
-int main()
-{
+int main() {
 	BuildTree b("expression.txt");
 
 	b.tokenize();
 
 	return 0;
-
 }

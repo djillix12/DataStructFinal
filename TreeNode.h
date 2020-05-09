@@ -1,20 +1,22 @@
+#pragma once
+
 class TreeNode {
-	private:
-		char item;
-		TreeNode* leftChild;
-		TreeNode* rightChild;
+private:
+	char item;
+	TreeNode* leftChild;
+	TreeNode* rightChild;
 
-	public:
-		TreeNode();
+public:
+	TreeNode();
 
-		void setItem(char anItem);
-		char getItem() const;
+	void setItem(char anItem);
+	char getItem() const;
 
-		bool isLeaf() const;
+	//bool isLeaf() const;
 
-		TreeNode* getLeftChildPtr() const;
-		TreeNode* getRightChildPtr() const;
+	TreeNode* getLeftChildPtr() const;
+	TreeNode* getRightChildPtr() const;
 
-		void setLeftChildPtr(TreeNode* leftPtr);
-		void setRightChildPtr(TreeNode* rightPtr); 
+	void setLeftChildPtr(TreeNode* leftPtr);
+	void setRightChildPtr(TreeNode* rightPtr);
 };

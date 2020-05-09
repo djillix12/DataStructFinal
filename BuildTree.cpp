@@ -29,23 +29,68 @@ std::vector<char> BuildTree::tokenize()
 void BuildTree::build(std::vector<char> v) {
 
 	for (int i = 0; i < v.size(); i++) {
-		switch(v[i]) {
+
+		if (root != nullptr) {
+
+			switch (v[i]) {
 			case '(':
-			break;
-			
+				TreeNode * newNode = new TreeNode();
+				leftParanthesis(newNode);
+				break;
+
 			case ')':
-			break;
+				rightParanthesis();
+				break;
 
 			case '+':
 			case '-':
 			case '/':
 			case '*':
-			break;
+				TreeNode * newNode = new TreeNode();
+				break;
 
-			/* If token is a number */
+				/* If token is a number */
 			default:
-			break;
+				break;
+			}
 		}
 	}
 
+}
+
+TreeNode* BuildTree::leftParanthesis(TreeNode* newNode)
+{
+
+	/* The root node now has a left child of this new node */
+	root->setLeftChildPtr(newNode);
+
+	/* Descend root node to new left child */
+	root = newNode;
+
+	return root;
+}
+
+TreeNode* BuildTree::rightParanthesis()
+{
+	//return to parent
+}
+
+TreeNode* BuildTree::isOperand(char item)
+{
+	root->setItem(item);
+
+	//return to parent
+
+	return root;
+}
+
+TreeNode* BuildTree::isOperator(char item, TreeNode* newNode)
+{
+	root->setItem(item);
+
+	root->setRightChildPtr(newNode);
+
+	root = newNode;
+
+	return root;
 }

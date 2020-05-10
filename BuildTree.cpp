@@ -1,96 +1,118 @@
+
 #include "BuildTree.h"
 #include <iterator>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
+
+BuildTree::BuildTree() {
+    exp=" ";
+    root= nullptr;
+
+    currentNode=root;
+
+    parentNode= nullptr;
+
+    groupCount=0;
+}//default constructor
+
+
+//constructor
 BuildTree::BuildTree(std::string aFileName)
 {
-	std::ifstream in(aFileName); // Creates the specified input file (determined by the passed 'aFileName')
+    std::ifstream in(aFileName); // Creates the specified input file (determined by the passed 'aFileName')
 
-	/* Uses std::string::assign, which iterates through our file 'in' and stores it in our variable 'exp' */
-	exp.assign((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-}
+    /* Uses std::string::assign, which iterates through our file 'in' and stores it in our variable 'exp' */
+    exp.assign((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 
-std::vector<char> BuildTree::tokenize()
-{
-	/* temporary vector, this is the vector we return after tokenizing */
-	std::vector<char> v;
+    TreeNode *newNode = new TreeNode;
+    root = newNode;
 
-	/* Stores each individual token in the vector, accounting for spaces which shouldn't be included */
-	for (int i = 0; i < exp.length(); i++) {
-		if (exp[i] != ' ') {
-			v.push_back(exp[i]);
-		}
-	}
+    currentNode = root;
 
-	return v; // Returns our vector of chars
-}
+    parentNode= nullptr;
+
+
+    groupCount = 0;
+}//constructor
+
+
+std::vector<char> BuildTree::tokenize() {
+
+    /* temporary vector, this is the vector we return after tokenizing */
+    std::vector<char> v;
+
+    /* Stores each individual token in the vector, accounting for spaces which shouldn't be included */
+    for (int i = 0; i < exp.length(); i++) {
+        if (exp[i] != ' ') {
+            v.push_back(exp[i]);
+        }//if
+    }//for
+
+    return v; // Returns our vector of chars
+}//tokenize
 
 void BuildTree::build(std::vector<char> v) {
 
-	for (int i = 0; i < v.size(); i++) {
+    for (int i = 0; i < v.size(); i++) {
 
-		if (root != nullptr) {
+        //if (root != nullptr) {
 
-			switch (v[i]) {
-			case '(':
-				TreeNode * newNode = new TreeNode();
-				leftParanthesis(newNode);
-				break;
+        switch (v[i]) {
+            
+            //if opening bracket, we create a left child of our currentNode
+            case '(': {
+                
+                TreeNode *newNode = new TreeNode;
 
-			case ')':
-				rightParanthesis();
-				break;
+                currentNode->setLeftChildPtr(newNode);//creating a new left child
 
-			case '+':
-			case '-':
-			case '/':
-			case '*':
-				TreeNode * newNode = new TreeNode();
-				break;
+                //parent node is now pointing to current
+                parentNode = currentNode;
 
-				/* If token is a number */
-			default:
-				break;
-			}
-		}
-	}
+                //current is pointing to the left child
+                currentNode = newNode;
+                
+                break;
 
-}
+            }//left Parenthesis
+            case ')': {
 
-TreeNode* BuildTree::leftParanthesis(TreeNode* newNode)
-{
+                currentNode = parentNode;
 
-	/* The root node now has a left child of this new node */
-	root->setLeftChildPtr(newNode);
+                break;
+            }//rightParenthesis
 
-	/* Descend root node to new left child */
-	root = newNode;
 
-	return root;
-}
+            //if an operator
+            case '+':
+            case '-':
+            case '/':
+            case '*': {
+                currentNode->setItem(v[i]);//setting the root of the current node to the operator
 
-TreeNode* BuildTree::rightParanthesis()
-{
-	//return to parent
-}
+                TreeNode *newNode = new TreeNode;
 
-TreeNode* BuildTree::isOperand(char item)
-{
-	root->setItem(item);
+                currentNode->setRightChildPtr(newNode);
 
-	//return to parent
+                parentNode = currentNode;
 
-	return root;
-}
+                currentNode=newNode;
 
-TreeNode* BuildTree::isOperator(char item, TreeNode* newNode)
-{
-	root->setItem(item);
+                break;
 
-	root->setRightChildPtr(newNode);
+            }//operator
 
-	root = newNode;
 
-	return root;
-}
+            default :
+                {
+                currentNode->setItem(v[i]);
+                currentNode=parentNode;
+
+                break;
+            }//if token is a number
+        }//switch
+    }//for size of the vector
+}//build
+
